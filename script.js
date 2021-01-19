@@ -134,7 +134,7 @@ function get_new_product_data(){
  var prod_size_list =document.getElementById('prod_size_list').value.split(',')
  var prod_size_currency =document.getElementById('prod_size_currency').value
 
-console.log(prod_price_list)
+
 
  return [prod_name,prod_price_list,prod_price_currency,
  prod_size_list, prod_size_currency]
@@ -163,10 +163,14 @@ function add_new_product_to_dict(){
 }
 
 function deleteproduct(id){
+  if(product[id]!=undefined){
+  console.log(product[id])
 delete product[id]
 product[id]={}
 product[id].name = "DELETED"
-generate_product_list()
+generate_product_list()}
+else{alert('такого id нет и не было в списке!')
+}
 }
 
 
@@ -194,3 +198,5 @@ for (let i in product){
   lst.push([`<br>${i}, ${product[i].name}, price ${product[i].price}`])}}
 return lst
 }
+
+
