@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shopping Cart</title>
+	<meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+<h1> Shopping Cart Propotype</h1>
+
+
+<div id="product_list">Список товаров:<br></div>
+
+
+<br>
+<div>дополнительные опции</div>
+<input type="checkbox" id="additional1" name="add1" value="a1">250 <span class="additional">упаковка</span>
+<input type="checkbox" id="additional2" name="add1" value="a2">550 <span class="additional">доставка</span>
+<input type="checkbox" id="additional3" name="add1" value="a3">750 <span class="additional">установка</span>
+
+<br>
+<br>
+
+
+<div id="buy_list" ></div>
+<div id="additional_list" ></div>
+<div>Total price <span id='amount'>0</span> rub</div>
+
+
+<div id="admin">
+  <h2>Admin Panel</h2>
+  <p><b>Добавить новый товар</b><br>
+   <input type="text" class="add_new_prod" placeholder="Имя товара" id="prod_name" >
+  </p>
+  Цена/цены<br>
+   <input type="text" class="add_new_prod" placeholder="Числа через запятую"id="prod_price_list" value='123,456,789'>
+  </p>
+  <p>Валюта<br>
+   <input type="text" class="add_new_prod" placeholder="рубли/доллары"id="prod_price_currency">
+  </p>
+  <p>Размер/размеры<br>
+   <input type="text" class="add_new_prod" placeholder="Числа через запятую" id="prod_size_list">
+  </p>
+  <p>Единица измерения<br>
+   <input type="text" class="add_new_prod" placeholder="можно оставить пустым" id="prod_size_currency">
+  </p>
+  <button type="submit" id="add_new_prod">Добавить</button>
+
+</div>
+
+
+
+<div id="admin">
+  <p><b>Удалить товар по id</b><br>
+   <input type="text" class="delete_prod" placeholder="id123000" 
+   id="delete_prod_imput" >
+  </p>
+  
+  <button type="submit" id="delete_prod">Удалить</button>
+
+</div>
+
+
+
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
