@@ -79,6 +79,7 @@ ${generate_radio_selector(product[i])}
 </div>
 `}
 }
+update_delete_list()
 }
 
 
@@ -179,6 +180,17 @@ document.getElementById('delete_prod').addEventListener('click',
   })
 
 
-var fruits = ["Banana", "Orange", "Apple", "Mango"];
-var energy = fruits.join();
-console.log(energy)
+
+function update_delete_list(){
+document.getElementById('id_list').innerHTML=`
+${preview_for_delete_list()}
+`}
+
+
+function preview_for_delete_list(){
+  var lst=[]
+for (let i in product){
+  if(product[i].name!='DELETED'){
+  lst.push([`<br>${i}, ${product[i].name}, price ${product[i].price}`])}}
+return lst
+}
