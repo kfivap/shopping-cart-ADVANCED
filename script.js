@@ -8,7 +8,11 @@ let product={
     price: [500,800,1100],
     price_units: 'р',
     size: [30,40,50],
-    size_units:'cm'
+    size_units:'cm',
+
+
+    radio_selected: null,
+    ordered: 0,
   },
 
   id2:{
@@ -18,6 +22,9 @@ let product={
     price_units: 'р',
     size: [1.0,1.7,2.2],
     size_units:'kg',
+
+    radio_selected: null,
+    ordered: 0,
   },
 
   id3:{
@@ -26,19 +33,92 @@ let product={
     price: [150,250, 330],
     price_units: 'р',
     size: ['Medium','Large','XLarge'],
-    size_units: undefined
+    size_units: undefined,
+
+    radio_selected: null,
+    ordered: 0,
   },
   id4:{
     id: 4,
     name: 'Coca-Cola',
-    price: ['123','456','789'],
+    price: [123,456,789],
     price_units: 'р',
     size: [0.3,0.5,0.8],
-    size_units: 'L'
+    size_units: 'L',
+
+    radio_selected: null,
+    ordered: 0,
   },
 
 }
 
+
+let cart = {
+  addtocart(id, size_price){ //cюда вводить id в формате id1 id2 id3
+    var len=-2
+    for(let i in cart){
+      //console.log(len)
+      ++len
+    }
+    cart[`pos${len}`]={  
+      id:product[id].id,
+      size:product[id].size[size_price],
+      price:product[id].price[size_price],
+    }
+  },
+
+
+  get_total_amount(){
+    var len=0
+    for(let i in cart){
+      ++len
+     // console.log(i)
+    }
+   // console.log('len',len)
+
+    var amount=0
+    for(let i=1; i<len-2; i++){ //
+      //console.log(i)
+      if (cart[`pos${i}`].id !="DELETED"){
+      amount+=cart[`pos${i}`].price
+      //console.log(amount)
+      //console.log(cart[`pos${i}`])
+    }
+  }
+  document.getElementById('amount').innerHTML=amount
+ 
+    },
+
+
+
+  remove_from_cart(id_delete){ //cюда вводить id в формате 1 2 3
+  var len=0
+    for(let i in cart){
+      ++len}
+  console.log(len-3)
+  for(let i=len-3; i>0;  i--){
+ //   console.log(i)
+
+ //   console.log(cart[`pos${i}`].id)
+    if(cart[`pos${i}`].id==id_delete){
+     console.log(cart[`pos${i}`]) 
+     delete cart[`pos${i}`]
+     cart[`pos${i}`]={}
+     cart[`pos${i}`].id = "DELETED"
+
+     cart.get_total_amount()
+     break 
+   }
+  }
+
+  },
+
+
+}
+
+
+
+cart.get_total_amount()
 
 
 
@@ -73,14 +153,57 @@ ${product[i].name}
 </div>
 ${generate_radio_selector(product[i])}
 <br>
-<button id="${product[i].id}_minus">-</button>
-Количество <span id="${product[i].id}_total">0</span>
-<button id="${product[i].id}_plus">+</button>
+<button id="${product[i].id}_minus"
+ onclick="if(product.${i}.ordered>0) {product.${i}.ordered-- ; 
+ console.log(product.${i}.ordered);
+document.getElementById('${product[i].id}_total').
+innerHTML=product.${i}.ordered;
+
+console.log(product.${i}.id);
+cart.remove_from_cart(product.${i}.id)
+
+}
+else{alert('нельзя меньше нуля')}
+"
+
+>-</button>
+
+Количество <span id="${product[i].id}_total">${product[i].ordered}</span>
+
+
+
+
+<button id="${product[i].id}_plus"
+onclick="
+if(product.${i}.radio_is_pressed==true){
+
+product.${i}.ordered++ ;
+document.getElementById('${product[i].id}_total').
+innerHTML=product.${i}.ordered;
+
+console.log('id'+product.${i}.id, product.${i}.radio_selected)
+cart.addtocart('id'+product.${i}.id, product.${i}.radio_selected)
+cart.get_total_amount()
+}
+
+else{
+  console.log(product.${i}.radio_is_pressed)
+  alert('сначала выберите размер!!!')
+}
+
+"
+>+</button>
 </div>
-`}
+`
+}
 }
 update_delete_list()
 }
+
+//cart.addtocart(product.${i}.id, product.${i}.radio_selected)
+//cart.get_total_amount()
+
+
 
 
 
@@ -89,14 +212,26 @@ function generate_radio_selector(id) {
 
   for (let i =0; i<id.price.length; ++i){
   html+=(`
-    <input type="radio" id="size${i}"
+    <input type="radio" id="id${id.id}size${i}"
+       onclick="product.id${id.id}.radio_is_pressed=true;
+       product.id${id.id}.radio_selected=${i}
+       console.log(product.id${id.id})
+
+       "
        name="${id.id}" >
       <label for="${id.id}">
       ${id.name} 
       ${id.size[i] +dropnull(id.size_units)}
       </label>
       <span class="price"> ${id.price[i] + id.price_units}</span>
-      `)}
+
+
+
+      `)
+  
+}
+
+
   return html
 }
 
@@ -158,6 +293,8 @@ function add_new_product_to_dict(){
   product[idname].size=lst[3]
   product[idname].size_units=lst[4]
 
+  product[idname].ordered=0
+  product[idname].radio_selected=null
 
   console.log(product)
 }
@@ -197,6 +334,11 @@ for (let i in product){
   if(product[i].name!='DELETED'){
   lst.push([`<br>${i}, ${product[i].name}, price ${product[i].price}`])}}
 return lst
+}
+
+
+function id_alert(i){
+  alert(`id1size${i}`)
 }
 
 
