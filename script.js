@@ -1,6 +1,8 @@
 'use strict';
 
 
+var dops = 0
+
 let product={
   id1:{
     id: 1,
@@ -55,20 +57,31 @@ let product={
 
 let cart = {
   addtocart(id, size_price){ //cюда вводить id в формате id1 id2 id3
-    var len=-2
+    var len=-3
     for(let i in cart){
       //console.log(len)
       ++len
     }
+
+        
+    
     cart[`pos${len}`]={  
+      id_pos:len,
       id:product[id].id,
+      name:product[id].name,
       size:product[id].size[size_price],
       price:product[id].price[size_price],
+
+      size_units:product[id].size_units,
+      price_units:product[id].price_units
+
     }
+   
+    
   },
 
 
-  get_total_amount(){
+  get_total_amount(plus=dops){
     var len=0
     for(let i in cart){
       ++len
@@ -76,8 +89,8 @@ let cart = {
     }
    // console.log('len',len)
 
-    var amount=0
-    for(let i=1; i<len-2; i++){ //
+    var amount=plus
+    for(let i=1; i<len-3; i++){ //
       //console.log(i)
       if (cart[`pos${i}`].id !="DELETED"){
       amount+=cart[`pos${i}`].price
@@ -86,7 +99,8 @@ let cart = {
     }
   }
   document.getElementById('amount').innerHTML=amount
- 
+  console.log(amount)
+  return amount
     },
 
 
@@ -95,13 +109,13 @@ let cart = {
   var len=0
     for(let i in cart){
       ++len}
-  console.log(len-3)
-  for(let i=len-3; i>0;  i--){
+  //console.log(len-4)
+  for(let i=len-4; i>0;  i--){
  //   console.log(i)
 
  //   console.log(cart[`pos${i}`].id)
     if(cart[`pos${i}`].id==id_delete){
-     console.log(cart[`pos${i}`]) 
+     //console.log(cart[`pos${i}`]) 
      delete cart[`pos${i}`]
      cart[`pos${i}`]={}
      cart[`pos${i}`].id = "DELETED"
@@ -113,12 +127,66 @@ let cart = {
 
   },
 
+  remove_from_cart_by_pos(pos_delete){//'pos1' //'pos2'
+
+    
+    //var s = "you can enter maximum 500 choices";
+    //alert (s.match(r));
+    console.log(cart[pos_delete].id)
+    //document.getElementById(cart[pos_delete].id+'_minus').click()
+    product['id'+cart[pos_delete].id].ordered--
+    generate_product_list()
+    delete cart[pos_delete]
+    cart[pos_delete]={}
+    cart[pos_delete].id = "DELETED"
+    //console.log(parseInt(pos_delete))
+    document.getElementById(`div_cart_pos${pos_delete}`).innerHTML=''
+    
+  
+  
+
+  }
+
 
 }
-
+/*
+cart.addtocart('id3', 2)
+cart.addtocart('id3', 2)
+cart.addtocart('id3', 2)
+cart.get_total_amount()
+*/
 
 
 cart.get_total_amount()
+function add_to_cart_list(id_pos){
+  //document.getElementById('buy_list').innerHTML=''
+  //cart[id_pos]={}
+  console.log(id_pos)
+document.getElementById('buy_list').innerHTML+=`
+<div id='div_cart_pos${id_pos}'>
+${cart[id_pos].name}
+${cart[id_pos].size}
+${cart[id_pos].price}${cart[id_pos].price_units}
+<button id='delete_${id_pos}' 
+onclick="//alert('удалить');
+console.log('${id_pos}')
+cart.remove_from_cart_by_pos('${id_pos}');
+
+
+console.log(cart);
+cart.get_total_amount()
+
+"
+
+>Убрать из корзины</button>
+
+</div>
+
+`
+}
+
+//add_to_cart_list()
+
 
 
 
@@ -153,13 +221,13 @@ ${product[i].name}
 </div>
 ${generate_radio_selector(product[i])}
 <br>
-<button id="${product[i].id}_minus"
+<button id="${product[i].id}_minus" hidden=''
  onclick="if(product.${i}.ordered>0) {product.${i}.ordered-- ; 
- console.log(product.${i}.ordered);
+ //console.log(product.${i}.ordered);
 document.getElementById('${product[i].id}_total').
 innerHTML=product.${i}.ordered;
 
-console.log(product.${i}.id);
+//console.log(product.${i}.id);
 cart.remove_from_cart(product.${i}.id)
 
 }
@@ -181,8 +249,17 @@ product.${i}.ordered++ ;
 document.getElementById('${product[i].id}_total').
 innerHTML=product.${i}.ordered;
 
-console.log('id'+product.${i}.id, product.${i}.radio_selected)
+//console.log('id'+product.${i}.id, product.${i}.radio_selected)
 cart.addtocart('id'+product.${i}.id, product.${i}.radio_selected)
+
+
+//cart.add_to_cart_list('id'+product.${i}.id, product.${i}.radio_selected)
+var len=-4;
+for(let i in cart){
+      ++len};
+
+add_to_cart_list('pos'+len)
+
 cart.get_total_amount()
 }
 
@@ -211,11 +288,35 @@ function generate_radio_selector(id) {
   let html=[]
 
   for (let i =0; i<id.price.length; ++i){
+    //console.log(product['id'+id.id].radio_selected)
+    
+   
+function abc(){
+      if(product['id'+id.id].radio_selected== i)
+        {
+          return 'checked="checked"'
+        }
+      else{
+        return 'pusto'}
+
+        }
+
+
   html+=(`
-    <input type="radio" id="id${id.id}size${i}"
+    <input type="radio" id="id${id.id}size${i}"`)+
+  abc()+
+  (`
+
+   
+      
        onclick="product.id${id.id}.radio_is_pressed=true;
        product.id${id.id}.radio_selected=${i}
        console.log(product.id${id.id})
+       console.log(product.id${id.id}.radio_selected)
+
+        
+      
+
 
        "
        name="${id.id}" >
@@ -228,6 +329,10 @@ function generate_radio_selector(id) {
 
 
       `)
+
+  
+
+  ///abc()
   
 }
 
@@ -366,3 +471,46 @@ document.getElementById('hide_admin').addEventListener(
 
   }
 )
+
+
+
+
+document.getElementById('additional1').addEventListener(
+  'change',
+  function(){
+    if(document.getElementById('additional1').checked==true){
+    dops+=250
+    cart.get_total_amount(dops)
+    }
+    if(document.getElementById('additional1').checked==false){
+    dops-=250
+    cart.get_total_amount(dops)
+    }
+  })
+
+document.getElementById('additional2').addEventListener(
+  'change',
+  function(){
+    if(document.getElementById('additional2').checked==true){
+    dops+=550
+    cart.get_total_amount(dops)
+    }
+    if(document.getElementById('additional2').checked==false){
+    dops-=550
+    cart.get_total_amount(dops)
+    }
+  })
+
+
+document.getElementById('additional3').addEventListener(
+  'change',
+  function(){
+    if(document.getElementById('additional3').checked==true){
+    dops+=750
+    cart.get_total_amount(dops)
+    }
+    if(document.getElementById('additional3').checked==false){
+    dops-=750
+    cart.get_total_amount(dops)
+    }
+  })
