@@ -342,3 +342,27 @@ function id_alert(i){
 }
 
 
+document.getElementById('admin').setAttribute('hidden', '')
+//document.getElementById('admin').removeAttribute("hidden")
+
+
+document.getElementById('password_input_button').addEventListener(
+  'click', function(){
+    if(document.getElementById('password_input').value=='0000'){
+
+      document.getElementById('admin').removeAttribute("hidden")
+      document.getElementById('password').setAttribute('hidden', '')
+    }
+
+    else{alert('wrong password!')}
+  }
+
+  )
+
+document.getElementById('hide_admin').addEventListener(
+  'click', function(){
+    document.getElementById('admin').setAttribute('hidden', '')
+    document.getElementById('password').removeAttribute('hidden', '')
+
+  }
+)

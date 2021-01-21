@@ -26,17 +26,29 @@
 <div>Total price <span id='amount'>0</span> rub</div>
 
 
-<div id="admin">
-  <h2>Admin Panel</h2>
+
+<div id="password">
+<h2>Для доступа к админке <br>введите пароль 0000</h2>
+  <input type="text" id="password_input" value="0000">
+  <button type="submit" id="password_input_button">Enter</button>
+</div>
+
+
+<span id="admin" >
+<div >
+
+
+  <h2>Admin Panel 
+    <button type="submit" id="hide_admin">Log out</button>
+
+  </h2>
   <h4>Добавить новый товар</h4>
    <input type="text" class="add_new_prod" 
    
    placeholder="Имя товара" id="prod_name" >
   </p>
   Цена/цены<br>
-   <input type="text" class="add_new_prod" placeholder="Числа через запятую"id="prod_price_list"
-onclick="product['id1'].ordered++ ; console.log(product['id1'].ordered)"
-    >
+   <input type="text" class="add_new_prod" placeholder="Числа через запятую"id="prod_price_list">
   </p>
   <p>Валюта<br>
    <input type="text" class="add_new_prod" placeholder="рубли/доллары"id="prod_price_currency">
@@ -53,7 +65,7 @@ onclick="product['id1'].ordered++ ; console.log(product['id1'].ordered)"
 
 
 
-<div id="admin">
+<div>
   <br>
   <h4>Удалить товар по id</h4>
   <div id="id_list"></div>
@@ -66,7 +78,7 @@ onclick="product['id1'].ordered++ ; console.log(product['id1'].ordered)"
 
 </div>
 
-
+</span>
 
 
 
